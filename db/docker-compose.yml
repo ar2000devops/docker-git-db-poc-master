@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+
+  AWS-DBS-5.7:
+
+    image: mysql:5.7
+    container_name: AWS-DBS-5.7
+    restart: always
+
+    environment:
+
+      - COMPOSE_PROJECT_NAME=AWS-DBS-5.7
+      - MYSQL_ROOT_PASSWORD=0123456789
+
+    ports:
+      - "3306:3306"
+
+    expose:
+      - "3306"
+
+    volumes:
+      - AWS-DBS-5.7:/var/lib/mysql
+
+    network_mode: bridge
+
+volumes:
+  AWS-DBS-5.7:

@@ -1,0 +1,61 @@
+version: "3"
+
+services:
+
+  git01.proceduralworks.org:
+
+    image: gitea/gitea:1.22
+    container_name: git01.proceduralworks.org
+    restart: always
+
+    environment:
+
+      COMPOSE_PROJECT_NAME: git01.proceduralworks.org
+
+      VIRTUAL_HOST: git01.proceduralworks.org
+      VIRTUAL_PORT: 3000
+
+      LETSENCRYPT_HOST: git01.proceduralworks.org
+      LETSENCRYPT_SINGLE_DOMAIN_CERTS: true
+      LETSENCRYPT_EMAIL: letsencrypt@proceduralworks.org
+
+      USER_UID: 1000
+      USER_GID: 1000
+
+      # The vars bellow are not taken into account when the server is started with a restored
+      # volume, i.e. when restoring from a backup we need to update/amend config variables
+      # in data/gitea/conf/app.ini
+
+      GITEA__database__DB_TYPE: mysql
+      GITEA__database__HOST: 172.31.24.197:3306
+      GITEA__database__NAME: git01_proceduralworks_org
+      GITEA__database__USER: gitea
+      GITEA__database__PASSWD: 01234546789
+
+      APP_NAME: ProceduralWorks Devops Test
+      RUN_MODE: prod
+      DOMAIN: git01.proceduralworks.org
+      SSH_DOMAIN: git01.proceduralworks.org
+      ROOT_URL: https://git01.proceduralworks.org
+      DISABLE_REGISTRATION: true
+      REQUIRE_SIGNIN_VIEW: true
+
+#      GITEA__mailer__ENABLED: true
+#      GITEA__mailer__SMTP_ADDR: smtp.gmail.com
+#      GITEA__mailer__SMTP_PORT: 465
+#      GITEA__mailer__FROM: git-admin@proceduralworks.org
+#      GITEA__mailer__USER: azurelabdesign@gmail.com
+#      GITEA__mailer__PASSWD: xlwvqekruknqrjjm
+#      GITEA__mailer__PROTOCOL: smtps
+
+    volumes:
+      - ./data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+    ports:
+      - "3000:3000"
+      - "222:22"
+
+    network_mode: bridge
+
